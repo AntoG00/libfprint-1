@@ -24,7 +24,7 @@
 #define GOODIX_511_EP_IN (0x1 | FPI_USB_ENDPOINT_IN)
 #define GOODIX_511_EP_OUT (0x1 | FPI_USB_ENDPOINT_OUT)
 
-#define GOODIX_511_FIRMWARE_VERSION ("GF_ST411SEC_APP_12117")
+#define GOODIX_511_FIRMWARE_VERSION ("GF_ST411SEC_APP_12109")
 
 #define GOODIX_511_PSK_FLAGS (0xbb020003)
 
@@ -61,5 +61,6 @@ guint8 goodix_511_config[] = {
 
 static const FpIdEntry id_table[] = {
   {.vid = 0x27c6, .pid = 0x5110},
+  {.vid = 0x27c6, .pid = 0x5117},
   {.vid = 0, .pid = 0, .driver_data = 0},
 };
