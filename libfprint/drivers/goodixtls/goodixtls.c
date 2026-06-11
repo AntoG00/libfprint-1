@@ -68,9 +68,16 @@ tls_server_psk_server_callback (SSL           *ssl,
       return 0;
     }
 
-  // zero out the psk
+  // IMPORTANT: This clear-text PSK must be extracted from the Windows driver
+  // memory via x64dbg. It is UNIQUE per device/firmware and the below key
+  // will NOT work for other users! You must replace it with your own.
+  const guint8 actual_psk[] = {
+    0xFA, 0xB8, 0x44, 0x88, 0x59, 0xCD, 0x50, 0xF6, 0x13, 0x0A, 0xA4, 0xF4, 0x65, 0x61, 0xC8, 0x6A,
+    0x4C, 0x63, 0x79, 0xBA, 0xC9, 0x08, 0x86, 0x1A, 0x7E, 0x77, 0xED, 0x69, 0x3E, 0x0C, 0x28, 0x0A
+  };
   for (int n = 0; n != len; ++n)
-    psk[n] = 0;
+    psk[n] = actual_psk[n];
+
 
   return len;
 }
@@ -90,12 +97,15 @@ tls_server_create_ctx (void)
   return ctx;
 }
 
+
+
+
 static void
 tls_server_config_ctx (SSL_CTX *ctx)
 {
   SSL_CTX_set_ecdh_auto (ctx, 1);
   SSL_CTX_set_dh_auto (ctx, 1);
-  SSL_CTX_set_cipher_list (ctx, "ALL");
+  SSL_CTX_set_cipher_list (ctx, "PSK-AES128-GCM-SHA256:@SECLEVEL=0");
   SSL_CTX_set_min_proto_version (ctx, TLS1_2_VERSION);
   SSL_CTX_set_max_proto_version (ctx, TLS1_2_VERSION);
   SSL_CTX_set_psk_server_callback (ctx, tls_server_psk_server_callback);
@@ -129,7 +139,7 @@ tls_config_ssl (SSL *ssl)
   SSL_set_min_proto_version (ssl, TLS1_2_VERSION);
   SSL_set_max_proto_version (ssl, TLS1_2_VERSION);
   SSL_set_psk_server_callback (ssl, tls_server_psk_server_callback);
-  SSL_set_cipher_list (ssl, "ALL");
+  SSL_set_cipher_list (ssl, "PSK-AES128-GCM-SHA256:@SECLEVEL=0");
 }
 
 static void *

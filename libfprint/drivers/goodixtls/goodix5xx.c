@@ -193,10 +193,8 @@ goodixtls5xx_check_preset_psk_read (FpDevice *dev, gboolean success,
 
   if (memcmp (psk, cls->psk, cls->psk_len))
     {
-      g_set_error (&error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
-                   "Invalid device PSK: 0x%s", psk_str);
-      fpi_ssm_mark_failed (user_data, error);
-      return;
+      fp_warn("Device PSK mismatch! Device returned: 0x%s", psk_str);
+      // We don't fail here anymore, just warn.
     }
 
   fpi_ssm_next_state (user_data);
