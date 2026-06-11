@@ -92,3 +92,6 @@ If everything is configured correctly, it will say `Enrolling right-index-finger
 
 ---
 *Special thanks to the community for reverse-engineering the TLS-PSK handshakes.*
+
+## Development note
+An LLM performed the majority of the implementation work for this branch. I reviewed, edited, validated, and tested the result on my laptop's Goodix 5117 hardware before submission.
