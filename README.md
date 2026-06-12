@@ -28,7 +28,7 @@ Windows hosts biometric drivers inside a generic `wudfhost.exe` process. We need
 
 1. Open `x64dbg` as Administrator.
 2. Go to `File > Attach` (`Alt + A`) and select the `wudfhost.exe` process with the PID you noted.
-3. The debugger will pause on a System Breakpoint. Spam the `F9` key (Run) a few times until the bottom-right corner steadily says `Running` and the program stops pausing.
+3. The debugger will pause on a System Breakpoint. Spam the `F9` key (Run) a few times until the bottom-left corner steadily says `Running` and the program stops pausing.
 
 ### Step 3: Set the Trap
 We need to catch the cryptography engine exactly when it loads the master key.
@@ -47,9 +47,9 @@ We need to catch the cryptography engine exactly when it loads the master key.
 4. Look at the Registers pane on the top right:
    - Verify `R8` equals `0000000000000020` (This confirms the key length is 32 bytes).
    - `RDX` holds the memory address of your key.
-5. Right-click `RDX` and select `Follow in Dump > Address`.
+5. Right-click `RDX` and select `Follow in Dump` (or `Follow in Dump > Dump 1`).
 6. The bottom dump window will reveal your clear-text 32-byte key (it will look like highly randomized hex across two rows).
-7. Highlight exactly 32 bytes, right-click, and select `Copy > Hex`.
+7. Highlight exactly 32 bytes, right-click, and select `Copy`.
 
 > ⚠️ **Watchdog Crash?** If `x64dbg` says "Terminated" before you can copy the key, Windows killed the process. Simply open `services.msc`, restart the Windows Biometric Service, find the new PID in Process Explorer, and try again a bit faster!
 
